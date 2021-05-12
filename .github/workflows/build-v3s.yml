@@ -48,6 +48,8 @@ jobs:
         git pull origin ${{github.event.inputs.branches-tags}}
         cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}} /opt/buildroot
         make
+        sh ./pack.sh
+        cp flash_32m.bin /opt/firmware
 
     - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
       uses: actions/upload-artifact@master
