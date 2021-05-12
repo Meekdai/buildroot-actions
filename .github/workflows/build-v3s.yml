@@ -55,8 +55,10 @@ jobs:
         cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pack.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
         cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pre_build.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
         make
-        sh ./pack.sh
+        sudo sh ./pack.sh
         cp flash_32m.bin /opt/firmware
+        cp files.tgz /opt/firmware
+        cp flash.tgz /opt/firmware
 
     - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
       uses: actions/upload-artifact@master

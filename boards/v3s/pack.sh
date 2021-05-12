@@ -40,7 +40,7 @@ dd if=notrunc if=output/images/sun8i-v3s-licheepi-zero-dock.dtb of=flash_32m.bin
 dd if=notrunc if=output/images/zImage of=flash_32m.bin bs=$((0x110000)) seek=1
 dd if=notrunc if=jffs2.bin of=flash_32m.bin bs=$((0x610000)) seek=1
 
-tar czvf /var/www/html/files.tgz jffs2.bin output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin output/images/env.bin output/images/sun8i-v3s-licheepi-zero-dock.dtb output/images/zImage
+tar czvf files.tgz jffs2.bin output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin output/images/env.bin output/images/sun8i-v3s-licheepi-zero-dock.dtb output/images/zImage
 ###压缩###
-tar czvf /var/www/html/flash.tgz flash_32m.bin
+tar czvf flash.tgz flash_32m.bin
 
