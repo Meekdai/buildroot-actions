@@ -27,7 +27,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: Clone source code
@@ -38,7 +38,10 @@ jobs:
     - name: Install packages
       run: |
         sudo apt-get update
+        sudo apt-get upgrade
         sudo apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils
+        sudo apt install gcc build-essential bison flex gettext tcl sharutils libncurses-dev zlib1g-dev exuberant-ctags g++ texinfo patch vim libtool bc git python3 unzip python3-distutils swig python-dev
+        sudo apt install gcc-arm-linux-gnueabihf
 
     - name: Bulid
       run: |
