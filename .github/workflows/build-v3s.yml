@@ -1,0 +1,56 @@
+name: build-v3s
+
+on:
+  workflow_dispatch:
+    inputs:
+      git-address:
+        description: 'git-address'
+        required: true
+        default: 'https://github.com/buildroot/buildroot'
+      branches-tags:
+        description: 'branches-tags'
+        required: true
+        default: '2018.08.2'
+      board:
+        description: 'board'
+        required: true
+        default: 'v3s'
+      custom-board:
+        description: 'custom-board'
+        required: false
+        default: 'v3s'
+      build-with:
+        description: 'build-with'
+        required: false
+        default: ''
+
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Clone source code
+      run: |
+        git clone ${{github.event.inputs.git-address}} /opt/buildroot
+        cd /opt/buildroot
+
+    - name: Install packages
+      run: |
+        apt-get update
+        apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils
+
+    - name: Bulid
+      run: |
+        mkdir /opt/firmware
+        cd /opt/buildroot
+        git checkout ${{github.event.inputs.branches-tags}}
+        git pull origin ${{github.event.inputs.branches-tags}}
+        cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}} /opt/buildroot
+        make
+
+    - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
+      uses: actions/upload-artifact@master
+      with:
+        name: buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
+        path: /opt/firmware
