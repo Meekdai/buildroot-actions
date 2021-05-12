@@ -46,7 +46,11 @@ jobs:
         cd /opt/buildroot-${{github.event.inputs.branches-tags}}
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
-        cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}} /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/output /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/.config /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/backup.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pack.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pre_build.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
         make
         sh ./pack.sh
         cp flash_32m.bin /opt/firmware
