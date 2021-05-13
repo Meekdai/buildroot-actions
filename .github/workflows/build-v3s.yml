@@ -49,8 +49,6 @@ jobs:
       run: |
         mkdir /opt/firmware
         cd /opt/buildroot-${{github.event.inputs.branches-tags}}
-        git checkout ${{github.event.inputs.branches-tags}}
-        git pull origin ${{github.event.inputs.branches-tags}}
         cp -rf /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/output /opt/buildroot-${{github.event.inputs.branches-tags}}
         cp -f /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/.config /opt/buildroot-${{github.event.inputs.branches-tags}}
         cp -f /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/backup.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
