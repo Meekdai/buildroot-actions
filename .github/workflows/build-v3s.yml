@@ -40,7 +40,7 @@ jobs:
         sudo apt-get update
         sudo apt-get upgrade
         sudo apt-get install -y make gcc g++ unzip git bc python device-tree-compiler mtd-utils
-        sudo apt install gcc build-essential bison flex gettext tcl sharutils libncurses-dev zlib1g-dev exuberant-ctags g++ texinfo patch vim libtool bc git python3 unzip python3-distutils swig python-dev
+        sudo apt install gcc build-essential bison flex gettext tcl sharutils libncurses-dev zlib1g-dev exuberant-ctags g++ texinfo patch vim libtool bc git python3 unzip python3-distutils swig python-dev tree
         sudo apt install gcc-arm-linux-gnueabihf
 
     - name: Bulid
@@ -51,6 +51,7 @@ jobs:
         git pull origin ${{github.event.inputs.branches-tags}}
         echo '---start copy files---'
         cp -r /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.custom-board}}/buildroot /opt
+        tree output/
         echo '---start make---'
         make
         echo '---start pack---'
