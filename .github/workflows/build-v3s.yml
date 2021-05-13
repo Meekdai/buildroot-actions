@@ -6,7 +6,7 @@ on:
       git-address:
         description: 'git-address'
         required: true
-        default: 'https://github.com/buildroot/buildroot'
+        default: 'https://github.com/buildroot/buildroot.git'
       branches-tags:
         description: 'branches-tags'
         required: true
@@ -32,8 +32,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Clone source code
       run: |
-        git clone ${{github.event.inputs.git-address}} /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cd /opt/buildroot-${{github.event.inputs.branches-tags}}
+        git clone ${{github.event.inputs.git-address}} /opt/buildroot
+        cd /opt/buildroot
 
     - name: Install packages
       run: |
@@ -46,11 +46,11 @@ jobs:
     - name: Bulid
       run: |
         mkdir /opt/firmware
-        cd /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cd /opt/buildroot
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
         echo '---start copy files---'
-        cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/ /opt/buildroot-${{github.event.inputs.branches-tags}}/
+        cp -r /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.custom-board}}/buildroot /opt
         echo '---start make---'
         make
         echo '---start pack---'

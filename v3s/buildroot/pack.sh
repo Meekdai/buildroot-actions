@@ -1,12 +1,12 @@
 ###pack.sh###
 ###编译qt demo 程序 --- 模拟时钟, 并拷贝到文件系统###
-cd /opt/buildroot-2018.08.2/output/build/qt5base-5.11.1/examples/gui/analogclock
-/opt/buildroot-2018.08.2/output/host/bin/qmake analogclock.pro
+cd /opt/buildroot/output/build/qt5base-5.11.1/examples/gui/analogclock
+/opt/buildroot/output/host/bin/qmake analogclock.pro
 make
-cp analogclock /opt/buildroot-2018.08.2/output/target/usr/bin/ -rf
+cp analogclock /opt/buildroot/output/target/usr/bin/ -rf
 
 ###删除旧系统###
-cd /opt/buildroot-2018.08.2/
+cd /opt/buildroot/
 rm jffs2.bin -rf
 rm flash_32m.bin -rf
 
