@@ -49,17 +49,17 @@ jobs:
         cd /opt/buildroot-${{github.event.inputs.branches-tags}}
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
-        echo '---start cp files---'
-        cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/output /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/.config /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pack.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
+        echo '---start copy files---'
+        cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/ /opt/buildroot-${{github.event.inputs.branches-tags}}/
         echo '---start make---'
         make
         echo '---start pack---'
         sudo sh ./pack.sh
+        echo '---start copy firmware---'
         cp flash_32m.bin /opt/firmware
         cp files.tgz /opt/firmware
         cp flash.tgz /opt/firmware
+        echo '---END---'
 
     - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
       uses: actions/upload-artifact@master
