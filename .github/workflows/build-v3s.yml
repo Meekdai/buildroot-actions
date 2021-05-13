@@ -32,8 +32,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Clone source code
       run: |
-        git clone ${{github.event.inputs.git-address}} /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cd /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cd /opt
+        wget https://buildroot.org/downloads/buildroot-${{github.event.inputs.branches-tags}}.tar.gz
+        tar xvf buildroot-${{github.event.inputs.branches-tags}}.tar.gz
+        cd buildroot-${{github.event.inputs.branches-tags}}
 
     - name: Install packages
       run: |
@@ -49,11 +51,11 @@ jobs:
         cd /opt/buildroot-${{github.event.inputs.branches-tags}}
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
-        cp -r /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/output /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/.config /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/backup.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pack.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
-        cp /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pre_build.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp -rf /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/output /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp -f /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/.config /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp -f /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/backup.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp -f /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pack.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
+        cp -f /home/runner/work/buildroot-actions/buildroot-actions/boards/${{github.event.inputs.custom-board}}/pre_build.sh /opt/buildroot-${{github.event.inputs.branches-tags}}
         make
         sudo sh ./pack.sh
         cp flash_32m.bin /opt/firmware
