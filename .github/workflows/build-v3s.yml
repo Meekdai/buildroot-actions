@@ -3,6 +3,10 @@ name: build-v3s
 on:
   workflow_dispatch:
     inputs:
+      NGROK_TOKEN:
+        description: 'NGROK_TOKEN'
+        required: true
+        default: ''
       git-address:
         description: 'git-address'
         required: true
@@ -29,6 +33,13 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
+    - uses: shaowenchen/debugger-action@v2
+      name: debugger
+      timeout-minutes: 180
+      continue-on-error: true
+      with:
+        ngrok_token: ${{github.event.inputs.NGROK_TOKEN}}
+
     - uses: actions/checkout@v2
     - name: Clone source code
       run: |
