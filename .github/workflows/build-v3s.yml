@@ -78,7 +78,6 @@ jobs:
         dd if=/dev/zero bs=1M count=32 | tr "\000" "\377" > flash_32m.bin
         echo '---copy files into 32M bin---'
         dd if=notrunc if=output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin of=flash_32m.bin seek=0
-        dd if=notrunc if=output/images/env.bin of=flash_32m.bin bs=$((0xF8000)) seek=1
         dd if=notrunc if=output/images/sun8i-v3s-licheepi-zero-dock.dtb of=flash_32m.bin bs=$((0x100000)) seek=1
         dd if=notrunc if=output/images/zImage of=flash_32m.bin bs=$((0x110000)) seek=1
         dd if=notrunc if=jffs2.bin of=flash_32m.bin bs=$((0x610000)) seek=1
@@ -88,7 +87,6 @@ jobs:
         cp output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin /opt/firmware
         cp output/images/sun8i-v3s-licheepi-zero-dock.dtb /opt/firmware
         cp output/images/zImage /opt/firmware
-        cp output/images/env.bin /opt/firmware
         echo '---END---'
 
     - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
