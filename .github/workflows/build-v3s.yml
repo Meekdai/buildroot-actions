@@ -52,12 +52,14 @@ jobs:
         cd /opt/buildroot
         sh ./pre_build.sh
         make
+        echo '---start pack---'
+        sh ./pack.sh
         echo '---start copy firmware---'
-        mkdir /opt/firmware/output
-        cp -r output/target/ /opt/firmware/output
         cp output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin /opt/firmware
         cp output/images/sun8i-v3s-licheepi-zero-dock.dtb /opt/firmware
         cp output/images/zImage /opt/firmware
+        cp jffs2.bin /opt/firmware
+        cp flash_32m.bin /opt/firmware
         echo '---END---'
 
     - name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
