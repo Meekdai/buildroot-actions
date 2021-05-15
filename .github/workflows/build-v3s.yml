@@ -51,39 +51,14 @@ jobs:
         cp -ra /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.custom-board}}/buildroot /opt
         echo '---start make---'
         make
-        echo '---make qt demo---'
-        cd /opt/buildroot/output/build/qt5base-5.11.1/examples/gui/analogclock
-        /opt/buildroot/output/host/bin/qmake analogclock.pro
+        echo '---pre_build---'
+        cp -rf /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.custom-board}}/buildroot /opt
+        cd /opt/buildroot
+        sh ./pre_build.sh
         make
-        cp analogclock /opt/buildroot/output/target/usr/bin/ -rf
-        echo '---del old systerm---'
-        cd /opt/buildroot/
-        rm jffs2.bin -rf
-        rm flash_32m.bin -rf
-        echo '---copy inittab---'
-        cp output/images/inittab   output/target/etc/inittab
-        echo '---add analogclock---'
-        echo "/usr/bin/analogclock -platform linuxfb" > output/target/etc/profile.d/startup.sh
-        echo '---init wifi---'
-        cp output/images/wpa_supplicant.conf output/target/etc/ -rf
-        echo '---copy rtl8723---'
-        mkdir output/target/lib/firmware/rtlwifi/ -p
-        cp output/images/rtl8723bs_nic.bin output/target/lib/firmware/rtlwifi/ -rf
-        cp output/images/mdev.conf output/target/etc/ -rf
-        cp output/images/automount.sh output/target/sbin/ -rf
-        chmod +x output/target/sbin/
-        echo '---add jffs2 filesysterm---'
-        mkfs.jffs2 -s 0x1000 -e 0x10000 --pad=0x19F0000 -d output/target/ -o jffs2.bin
-        echo '---init 32M bin---'
-        dd if=/dev/zero bs=1M count=32 | tr "\000" "\377" > flash_32m.bin
-        echo '---copy files into 32M bin---'
-        dd if=notrunc if=output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin of=flash_32m.bin seek=0
-        dd if=notrunc if=output/images/sun8i-v3s-licheepi-zero-dock.dtb of=flash_32m.bin bs=$((0x100000)) seek=1
-        dd if=notrunc if=output/images/zImage of=flash_32m.bin bs=$((0x110000)) seek=1
-        dd if=notrunc if=jffs2.bin of=flash_32m.bin bs=$((0x610000)) seek=1
         echo '---start copy firmware---'
-        cp flash_32m.bin /opt/firmware
-        cp jffs2.bin /opt/firmware
+        mkdir /opt/firmware/target
+        cp -ra output/target/ /opt/firmware/target
         cp output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin /opt/firmware
         cp output/images/sun8i-v3s-licheepi-zero-dock.dtb /opt/firmware
         cp output/images/zImage /opt/firmware
