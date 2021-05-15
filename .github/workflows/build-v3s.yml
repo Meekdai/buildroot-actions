@@ -15,10 +15,6 @@ on:
         description: 'board'
         required: true
         default: 'v3s'
-      custom-board:
-        description: 'custom-board'
-        required: false
-        default: 'v3s'
       build-with:
         description: 'build-with'
         required: false
@@ -48,17 +44,17 @@ jobs:
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
         echo '---start copy files---'
-        cp -ra /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.custom-board}}/buildroot /opt
+        cp -ra /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.board}}/buildroot /opt
         echo '---start make---'
         make
         echo '---pre_build---'
-        cp -rf /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.custom-board}}/buildroot /opt
+        cp -rf /home/runner/work/buildroot-actions/buildroot-actions/${{github.event.inputs.board}}/buildroot /opt
         cd /opt/buildroot
         sh ./pre_build.sh
         make
         echo '---start copy firmware---'
-        mkdir /opt/firmware/target
-        cp -ra output/target/ /opt/firmware/target
+        mkdir /opt/firmware/output
+        cp -r output/target/ /opt/firmware/output
         cp output/build/uboot-v3s-spi-experimental/u-boot-sunxi-with-spl.bin /opt/firmware
         cp output/images/sun8i-v3s-licheepi-zero-dock.dtb /opt/firmware
         cp output/images/zImage /opt/firmware
