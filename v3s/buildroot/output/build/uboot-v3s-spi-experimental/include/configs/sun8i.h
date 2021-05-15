@@ -27,17 +27,21 @@
 	#define CONFIG_SUNXI_USB_PHYS	2
 #endif
 
+#define CONFIG_BOOTCOMMAND   "sf probe 0; "                           \
+                             "sf read 0x41800000 0x100000 0x10000; "  \
+                             "sf read 0x41000000 0x110000 0x500000; " \
+                             "bootz 0x41000000 - 0x41800000"
+
+#define CONFIG_BOOTARGS      "console=ttyS0,115200 earlyprintk panic=5 rootwait " \
+                             "mtdparts=spi32766.0:1M(uboot)ro,64k(dtb)ro,5M(kernel)ro,-(rootfs) root=31:03 rw rootfstype=jffs2"
+
+#define CONFIG_VIDEO_LOGO
+#define CONFIG_VIDEO_BMP_LOGO
+#define CONFIG_HIDE_LOGO_VERSION
+
 /*
  * Include common sunxi configuration where most the settings are
  */
 #include <configs/sunxi-common.h>
-
-
-
-
-#define CONFIG_BOOTCOMMAND    "sf probe 0 50000000;sf read 0x41800000 0x100000 0x4000;sf read 0x41000000 0x110000 0x500000; bootz 0x41000000 - 0x41800000"
-#define CONFIG_BOOTARGS       "console=ttyS0,115200 earlyprintk panic=5 rootwait mtdparts=spi32766.0:992k(uboot)ro,32k(env)ro,64k(dtb)ro,5M(kernel)ro,-(rootfs) root=31:04 rw rootfstype=jffs2"
-
-
 
 #endif /* __CONFIG_H */
