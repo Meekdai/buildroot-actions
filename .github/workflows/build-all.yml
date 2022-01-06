@@ -15,6 +15,10 @@ on:
         description: 'board'
         required: true
         default: 'beaglebone'
+      custom-config:
+        description: 'custom-config'
+        required: false
+        default: 'beaglebone_defconfig'
       build-with:
         description: 'build-with'
         required: false
@@ -44,8 +48,10 @@ jobs:
         git checkout ${{github.event.inputs.branches-tags}}
         git pull origin ${{github.event.inputs.branches-tags}}
 
+        if [ ${{github.event.inputs.custom-config}}!='' ]; then cp -f /home/runner/work/buildroot-actions/buildroot-actions/configs/${{github.event.inputs.custom-config}} configs/; fi
+
         echo '---start make---'
-        make beaglebone_defconfig
+        make ${{github.event.inputs.board}}_defconfig
         make
         tree
 
